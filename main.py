@@ -49,7 +49,9 @@ def is_obstacle() -> tuple:
     colors = np.array([[83, 83, 83], [172, 172, 172]])
 
     for label, sl in [('high', slice_high), ('med', slice_med), ('low', slice_low)]:
-        if any((sl == color).all(axis=1).any() for color in colors): #TODO Look into the flashing when the scenery changes to night-mode
+        if any((sl == color).all(axis=1).any() for color in colors): #TODO Look into the flashing when the scenery changes to night-mode <----------- TO DO THIS JUST REVERSE THE LOGIC AND CHECK FOR ANYTHING THAT IS NOT BACKGROUND COLOR (BUT STILL THE TRANSITION MIGHT BE THOUGH TO DEAL WITH)
+            #TODO ------------->>>> OK GENIUS IDEA!! GET SINGLE PIXEL FROM BACKGROUND TO COMPARE WITH SLICES, IF DIFFERS THERE'S AN OBSTACLE!!!!!
+
             # img = Image.frombytes('RGB', img_sample.size, img_sample.rgb)
             # screen = Image.frombytes('RGB', full_screen_sample.size, full_screen_sample.rgb)
             # img.save("debug_capture.png")
