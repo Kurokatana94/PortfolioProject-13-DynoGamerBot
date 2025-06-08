@@ -5,11 +5,11 @@ import keyboard
 import time
 
 min_y = 700
-min_x = 540
+min_x = 290
 med_y = 750
-med_x = 650
+med_x = 400
 max_y = 800
-max_x = 770
+max_x = 720
 
 y_dif = 1
 x_dif = 40
@@ -46,11 +46,15 @@ def is_obstacle() -> tuple:
     slice_med = bot_fov[med_y, med_x_start:med_x_end, :]
     slice_low = bot_fov[low_y, low_x_start:low_x_end, :]
 
-    colors = np.array([[83, 83, 83], [172, 172, 172]])
+    color = np.array(sct.grab({
+        'top': 800,
+        'left': 10,
+        'width': 1,
+        'height': 1,
+    }))[:, :, :3][0,0]
 
     for label, sl in [('high', slice_high), ('med', slice_med), ('low', slice_low)]:
-        if any((sl == color).all(axis=1).any() for color in colors): #TODO Look into the flashing when the scenery changes to night-mode <----------- TO DO THIS JUST REVERSE THE LOGIC AND CHECK FOR ANYTHING THAT IS NOT BACKGROUND COLOR (BUT STILL THE TRANSITION MIGHT BE THOUGH TO DEAL WITH)
-            #TODO ------------->>>> OK GENIUS IDEA!! GET SINGLE PIXEL FROM BACKGROUND TO COMPARE WITH SLICES, IF DIFFERS THERE'S AN OBSTACLE!!!!!
+        if (sl != color).all(axis=1).any():
 
             # img = Image.frombytes('RGB', img_sample.size, img_sample.rgb)
             # screen = Image.frombytes('RGB', full_screen_sample.size, full_screen_sample.rgb)
@@ -60,12 +64,16 @@ def is_obstacle() -> tuple:
             return True, label
     return False, ''
 
+# Makes the dyno jump low
 def short_jump():
-    keyboard.send('space')
+    keyboard.press('space')
+    time.sleep(.02)
+    keyboard.release('space')
 
+# Makes the dyno jump high
 def long_jump():
     keyboard.press('space')
-    time.sleep(.08)
+    time.sleep(.2)
     keyboard.release('space')
 
 def main():
