@@ -1,10 +1,10 @@
-from PIL import Image
 import numpy as np
 import mss
 import keyboard
 import time
 
 # !!!!!!!!! Y COORDS GO FROM TOP TO BOTTOM !!!!!!!!!
+#ALL HARDCODED FOR 1440p screens
 min_y = 960 #BOTTOM
 min_x = 330
 med_y = 900
@@ -40,7 +40,7 @@ BOX = {'top': max_y,
 sct = mss.mss()
 
 def is_obstacle() -> tuple:
-    # img_sample = sct.grab(BOX)
+    # img_sample = sct.grab(BOX) #Here for debugging purpose
     # full_screen_sample = sct.grab((0,0,2560,1440))
     bot_fov = np.array(sct.grab(BOX))[:, :, :3]
 
@@ -61,7 +61,7 @@ def is_obstacle() -> tuple:
             # img = Image.frombytes('RGB', img_sample.size, img_sample.rgb)
             # screen = Image.frombytes('RGB', full_screen_sample.size, full_screen_sample.rgb)
             # img.save("debug_capture.png")
-            # screen.save("debug_screen.png")
+            # screen.save("debug_screen.png") #Same here for debugging
 
             return True, label
     return False, ''
@@ -78,6 +78,7 @@ def long_jump():
     time.sleep(.1)
     keyboard.release('space')
 
+# MAIN LOOP
 def main():
     n = 0
     print('Starting...')
@@ -99,7 +100,7 @@ def main():
             n+=1
             print(f'jump {check_result[1]}', n)
             # break
-        # print(f"Frame time: {1000 * (time.time() - start):.2f} ms")
+        # print(f"Frame time: {1000 * (time.time() - start):.2f} ms") #Yes debugging again and optimization
 
 if __name__ == '__main__':
     main()
